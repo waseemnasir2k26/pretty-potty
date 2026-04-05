@@ -1,19 +1,21 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
 import {
   Phone, Mail, MapPin, Star, ArrowRight, ChevronDown, ChevronUp,
-  Menu, X, Users, CheckCircle2, Clock, Shield, Sparkles,
-  Droplets, Thermometer, Volume2, Lock, Globe, Share2, ArrowUpRight,
-  Wifi, Sun, Music, Eye
+  Menu, X, Users, CheckCircle2, Clock, Shield,
+  Droplets, Thermometer, Lock, Globe, Share2, ArrowUpRight,
+  Sun, Music, Eye
 } from 'lucide-react'
 import { FadeIn, ScaleIn, IMG } from '../components/shared'
+import QuoteForm from '../components/QuoteForm'
 
 export default function V5Editorial() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [faqOpen, setFaqOpen] = useState(null)
   const [activeReview, setActiveReview] = useState(0)
-  const { scrollYProgress } = useScroll()
+  const heroRef = useRef(null)
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
   const heroParallax = useTransform(scrollYProgress, [0, 0.3], [0, -120])
   const heroTextParallax = useTransform(scrollYProgress, [0, 0.3], [0, -60])
   const heroOpacity = useTransform(scrollYProgress, [0, 0.25], [1, 0])
@@ -122,8 +124,6 @@ export default function V5Editorial() {
 
       {/* ── GLOBAL STYLES ── */}
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700&family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&display=swap');
-
         .font-editorial { font-family: 'Playfair Display', serif; }
         .font-body { font-family: 'Inter', sans-serif; }
         .font-garamond { font-family: 'Cormorant Garamond', serif; }
@@ -213,7 +213,7 @@ export default function V5Editorial() {
             </a>
           </div>
 
-          <button onClick={() => setMenuOpen(!menuOpen)} className="lg:hidden text-white cursor-pointer">
+          <button onClick={() => setMenuOpen(!menuOpen)} className="lg:hidden text-white cursor-pointer" aria-label={menuOpen ? 'Close menu' : 'Open menu'} aria-expanded={menuOpen}>
             {menuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
@@ -247,7 +247,7 @@ export default function V5Editorial() {
       {/* =====================================================
           HERO - Split Diagonal: Dark left with text, Image right
          ===================================================== */}
-      <section className="relative min-h-screen overflow-hidden" style={{ backgroundColor: colors.midnight }}>
+      <section ref={heroRef} className="relative min-h-screen overflow-hidden" style={{ backgroundColor: colors.midnight }}>
         {/* Background grid overlay */}
         <div className="absolute inset-0 editorial-grid-overlay opacity-30" />
 
@@ -338,6 +338,7 @@ export default function V5Editorial() {
               src={IMG.hero5}
               alt="NYC Skyline"
               className="w-full h-full object-cover"
+              fetchpriority="high"
               style={{ minHeight: '100%' }}
             />
             {/* Diagonal overlay from left */}
@@ -674,6 +675,7 @@ export default function V5Editorial() {
               <div className="flex gap-3 mt-12 pl-10 lg:pl-16">
                 {reviews.map((_, i) => (
                   <button key={i} onClick={() => setActiveReview(i)}
+                    aria-label={`Go to testimonial ${i + 1}`}
                     className="h-1 rounded-full transition-all duration-300 cursor-pointer"
                     style={{
                       width: i === activeReview ? 40 : 16,
@@ -690,7 +692,7 @@ export default function V5Editorial() {
               <p className="editorial-caps text-center mb-8" style={{ color: `${colors.rose}40` }}>As Seen In</p>
               <div className="flex flex-wrap items-center justify-center gap-10 lg:gap-16">
                 {['The Knot', 'Brides Magazine', 'Event Planner Mag', 'NY Weddings', 'Vogue Events'].map((pub, i) => (
-                  <span key={i} className="font-editorial text-lg sm:text-xl italic text-white/15 hover:text-white/30 transition-colors duration-300 cursor-default">
+                  <span key={i} className="font-editorial text-lg sm:text-xl italic text-white/30 hover:text-white/50 transition-colors duration-300 cursor-default">
                     {pub}
                   </span>
                 ))}
@@ -730,6 +732,7 @@ export default function V5Editorial() {
                 <div className="border-b" style={{ borderColor: `${colors.midnight}10` }}>
                   <button
                     onClick={() => setFaqOpen(faqOpen === i ? null : i)}
+                    aria-expanded={faqOpen === i}
                     className="w-full flex items-center justify-between py-7 text-left cursor-pointer group">
                     <div className="flex items-center gap-6 pr-4">
                       <span className="font-editorial text-lg font-medium shrink-0" style={{ color: `${colors.rose}50` }}>
@@ -777,7 +780,7 @@ export default function V5Editorial() {
       {/* =====================================================
           CTA - Full-bleed image with overlay
          ===================================================== */}
-      <section id="availability" className="relative min-h-[80vh] flex items-center overflow-hidden">
+      <section id="availability" className="relative min-h-[80vh] flex items-center overflow-hidden" role="region" aria-label="Contact">
         {/* Full bleed background */}
         <img src={IMG.wedding1} alt="Elegant event"
           className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
@@ -808,6 +811,10 @@ export default function V5Editorial() {
             <p className="font-garamond text-xl sm:text-2xl italic text-white/50 max-w-xl mx-auto mb-12 leading-relaxed">
               Join five hundred events that chose luxury over compromise. Receive your personalized quote in under two hours.
             </p>
+
+            <div id="contact" className="max-w-xl mx-auto mb-12">
+              <QuoteForm theme="rose" />
+            </div>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <a href="mailto:info@prettypottyny.com"
@@ -889,11 +896,11 @@ export default function V5Editorial() {
 
           {/* Bottom bar */}
           <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="font-body text-xs text-white/15">&copy; 2026 Pretty Potty NYC. All rights reserved.</p>
+            <p className="font-body text-xs text-white/30">&copy; 2026 Pretty Potty NYC. All rights reserved.</p>
             <div className="flex gap-8">
-              <a href="#" className="font-body text-xs text-white/15 hover:text-white/40 transition-colors cursor-pointer">Privacy Policy</a>
-              <a href="#" className="font-body text-xs text-white/15 hover:text-white/40 transition-colors cursor-pointer">Terms of Service</a>
-              <a href="#" className="font-body text-xs text-white/15 hover:text-white/40 transition-colors cursor-pointer">Sitemap</a>
+              <a href="#" className="font-body text-xs text-white/30 hover:text-white/50 transition-colors cursor-pointer">Privacy Policy</a>
+              <a href="#" className="font-body text-xs text-white/30 hover:text-white/50 transition-colors cursor-pointer">Terms of Service</a>
+              <a href="#" className="font-body text-xs text-white/30 hover:text-white/50 transition-colors cursor-pointer">Sitemap</a>
             </div>
           </div>
         </div>

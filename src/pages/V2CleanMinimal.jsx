@@ -4,9 +4,10 @@ import {
   Phone, Mail, MapPin, Star, ArrowRight, ChevronDown,
   Menu, X, Users, CheckCircle2, Droplets, Wind, Lock,
   Sparkles, Music, Lightbulb, Globe, Share2, Clock,
-  Shield, Heart, Zap, Award, ArrowUpRight
+  Shield, Heart, Award, ArrowUpRight
 } from 'lucide-react'
 import { FadeIn, ScaleIn, IMG } from '../components/shared'
+import QuoteForm from '../components/QuoteForm'
 
 export default function V2CleanMinimal() {
   const [scrolled, setScrolled] = useState(false)
@@ -115,6 +116,7 @@ export default function V2CleanMinimal() {
           <button
             onClick={() => setMenuOpen(!menuOpen)}
             className="lg:hidden text-gray-900 cursor-pointer"
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
           >
             {menuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -258,6 +260,7 @@ export default function V2CleanMinimal() {
                 src={IMG.hero2}
                 alt="Elegant outdoor event setup"
                 className="w-full h-full object-cover"
+                fetchpriority="high"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
 
@@ -567,6 +570,7 @@ export default function V2CleanMinimal() {
                   <button
                     key={i}
                     onClick={() => setActiveTestimonial(i)}
+                    aria-label={`View testimonial ${i + 1} of ${testimonials.length}`}
                     className={`h-2 rounded-full transition-all cursor-pointer ${
                       i === activeTestimonial
                         ? 'w-8 bg-[#2563eb]'
@@ -680,6 +684,7 @@ export default function V2CleanMinimal() {
                 <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden transition-all">
                   <button
                     onClick={() => setFaqOpen(faqOpen === i ? null : i)}
+                    aria-expanded={faqOpen === i}
                     className="w-full flex items-center justify-between p-6 text-left cursor-pointer group"
                   >
                     <span className="font-medium text-gray-900 group-hover:text-[#2563eb] transition-colors pr-4">
@@ -722,43 +727,20 @@ export default function V2CleanMinimal() {
       <section id="quote" className="py-24 lg:py-32 px-6">
         <div className="max-w-4xl mx-auto">
           <FadeIn>
-            <div className="relative bg-gray-900 rounded-3xl overflow-hidden p-10 md:p-16 lg:p-20 text-center">
-              {/* Subtle gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-br from-[#2563eb]/20 via-transparent to-[#C9A96E]/10" />
-              <div className="absolute top-0 right-0 w-96 h-96 bg-[#2563eb]/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-              <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#C9A96E]/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
-
-              <div className="relative z-10">
-                <h2 className="font-playfair text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-                  Ready to Elevate{' '}
-                  <span className="text-[#C9A96E]">Your Event?</span>
-                </h2>
-                <p className="text-lg text-white/60 max-w-xl mx-auto mb-10 leading-relaxed">
-                  Join 500+ events across New York that chose luxury over compromise.
-                  Get a personalized quote in under 2 hours.
-                </p>
-
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <a
-                    href="mailto:info@prettypottyny.com"
-                    className="group inline-flex items-center justify-center gap-2 bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-semibold px-10 py-4 rounded-full transition-all hover:shadow-xl hover:shadow-blue-500/30 cursor-pointer"
-                  >
-                    Get Your Free Quote
-                    <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                  </a>
-                  <a
-                    href="tel:+15165551234"
-                    className="inline-flex items-center justify-center gap-2 border border-white/20 hover:border-white/40 text-white font-medium px-10 py-4 rounded-full transition-all cursor-pointer"
-                  >
-                    <Phone size={18} />
-                    (516) 555-1234
-                  </a>
-                </div>
-
-                <p className="text-xs text-white/30 mt-8">
-                  Free quotes &middot; No obligation &middot; Response within 2 hours
-                </p>
-              </div>
+            <div className="text-center mb-12">
+              <h2 className="font-playfair text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+                Ready to Elevate{' '}
+                <span className="text-[#C9A96E]">Your Event?</span>
+              </h2>
+              <p className="text-lg text-gray-500 max-w-xl mx-auto leading-relaxed">
+                Join 500+ events across New York that chose luxury over compromise.
+                Get a personalized quote in under 2 hours.
+              </p>
+            </div>
+          </FadeIn>
+          <FadeIn delay={0.15}>
+            <div className="max-w-xl mx-auto">
+              <QuoteForm theme="light" />
             </div>
           </FadeIn>
         </div>
@@ -812,7 +794,7 @@ export default function V2CleanMinimal() {
               <p className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-4">Service Areas</p>
               {['Suffolk County', 'Nassau County', 'The Hamptons', 'Westchester', 'New York City', 'Connecticut', 'New Jersey'].map(area => (
                 <p key={area} className="text-sm text-gray-400 py-1.5 flex items-center gap-2">
-                  <MapPin size={12} className="text-gray-300 shrink-0" />
+                  <MapPin size={12} className="text-gray-400 shrink-0" />
                   {area}
                 </p>
               ))}
@@ -822,15 +804,15 @@ export default function V2CleanMinimal() {
             <div>
               <p className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-4">Contact</p>
               <a href="tel:+15165551234" className="flex items-center gap-3 text-sm text-gray-400 hover:text-[#2563eb] py-2 transition-colors cursor-pointer">
-                <Phone size={16} className="text-gray-300" />
+                <Phone size={16} className="text-gray-400" />
                 (516) 555-1234
               </a>
               <a href="mailto:info@prettypottyny.com" className="flex items-center gap-3 text-sm text-gray-400 hover:text-[#2563eb] py-2 transition-colors cursor-pointer">
-                <Mail size={16} className="text-gray-300" />
+                <Mail size={16} className="text-gray-400" />
                 info@prettypottyny.com
               </a>
               <p className="flex items-center gap-3 text-sm text-gray-400 py-2">
-                <MapPin size={16} className="text-gray-300" />
+                <MapPin size={16} className="text-gray-400" />
                 Long Island, New York
               </p>
 
@@ -843,17 +825,17 @@ export default function V2CleanMinimal() {
 
           {/* Bottom bar */}
           <div className="mt-16 pt-8 border-t border-gray-100 flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-xs text-gray-300">
+            <p className="text-xs text-gray-400">
               &copy; {new Date().getFullYear()} Pretty Potty Inc. All rights reserved.
             </p>
             <div className="flex items-center gap-6">
-              <a href="#" className="text-xs text-gray-300 hover:text-gray-500 transition-colors cursor-pointer">
+              <a href="#" className="text-xs text-gray-400 hover:text-gray-500 transition-colors cursor-pointer">
                 Privacy Policy
               </a>
-              <a href="#" className="text-xs text-gray-300 hover:text-gray-500 transition-colors cursor-pointer">
+              <a href="#" className="text-xs text-gray-400 hover:text-gray-500 transition-colors cursor-pointer">
                 Terms of Service
               </a>
-              <a href="#" className="text-xs text-gray-300 hover:text-gray-500 transition-colors cursor-pointer">
+              <a href="#" className="text-xs text-gray-400 hover:text-gray-500 transition-colors cursor-pointer">
                 Sitemap
               </a>
             </div>

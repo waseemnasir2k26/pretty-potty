@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Phone, Mail, MapPin, Star, ArrowRight, ChevronDown, ChevronUp, Menu, X, Users, CheckCircle2, Clock, Shield, Thermometer, Zap, Globe, Share2 } from 'lucide-react'
+import { Phone, Mail, MapPin, Star, ArrowRight, ChevronDown, Menu, X, Users, CheckCircle2, Clock, Shield, Thermometer, Zap, Globe, Share2 } from 'lucide-react'
 import { FadeIn, ScaleIn, IMG } from '../components/shared'
+import QuoteForm from '../components/QuoteForm'
 
 export default function V3BoldStatement() {
   const [scrolled, setScrolled] = useState(false)
@@ -58,7 +59,7 @@ export default function V3BoldStatement() {
               </span>
             </a>
           </div>
-          <button onClick={() => setMenuOpen(!menuOpen)} className="lg:hidden text-white cursor-pointer">
+          <button onClick={() => setMenuOpen(!menuOpen)} className="lg:hidden text-white cursor-pointer" aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}>
             {menuOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
         </div>
@@ -95,7 +96,7 @@ export default function V3BoldStatement() {
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         {/* Background image with heavy dark overlay */}
         <div className="absolute inset-0">
-          <img src={IMG.hero3} alt="" className="w-full h-full object-cover opacity-20" style={{ animation: 'kenburns 30s ease-in-out infinite' }} />
+          <img src={IMG.hero3} alt="" className="w-full h-full object-cover opacity-20" fetchpriority="high" style={{ animation: 'kenburns 30s ease-in-out infinite' }} />
           <div className="absolute inset-0 bg-gradient-to-b from-black via-black/70 to-black" />
         </div>
 
@@ -253,7 +254,7 @@ export default function V3BoldStatement() {
             <h2 className="font-montserrat text-4xl sm:text-6xl font-black uppercase text-center mb-6 tracking-tight">
               Built <span className="text-[#D4AF37]">Different</span>
             </h2>
-            <p className="font-inter text-lg text-white/40 text-center max-w-2xl mx-auto mb-20">
+            <p className="font-inter text-lg text-white/50 text-center max-w-2xl mx-auto mb-20">
               Every unit is engineered to deliver a five-star experience. No compromises. No exceptions.
             </p>
           </FadeIn>
@@ -292,7 +293,7 @@ export default function V3BoldStatement() {
             <h2 className="font-montserrat text-4xl sm:text-6xl font-black uppercase tracking-tight mb-4">
               Choose Your <span className="text-[#D4AF37]">Weapon</span>
             </h2>
-            <p className="font-inter text-lg text-white/40 mb-20 max-w-2xl">
+            <p className="font-inter text-lg text-white/50 mb-20 max-w-2xl">
               Three tiers of luxury. One standard: perfection.
             </p>
           </FadeIn>
@@ -480,6 +481,7 @@ export default function V3BoldStatement() {
               <div className="flex justify-center gap-4 mt-12">
                 {[0, 1, 2].map(i => (
                   <button key={i} onClick={() => setTestimonial(i)}
+                    aria-label={`Show testimonial ${i + 1}`}
                     className={`h-1 rounded-full transition-all cursor-pointer ${i === testimonial ? 'w-12 bg-[#D4AF37]' : 'w-4 bg-white/10 hover:bg-white/30'}`} />
                 ))}
               </div>
@@ -511,6 +513,7 @@ export default function V3BoldStatement() {
             <FadeIn key={i} delay={i * 0.04}>
               <div className={`border-2 mb-3 transition-all duration-300 ${faqOpen === i ? 'border-[#D4AF37] bg-[#D4AF37]/5' : 'border-white/10 hover:border-white/20'}`}>
                 <button onClick={() => setFaqOpen(faqOpen === i ? null : i)}
+                  aria-expanded={faqOpen === i}
                   className="w-full flex items-center justify-between p-6 text-left cursor-pointer group">
                   <span className={`font-montserrat text-sm sm:text-base uppercase font-bold tracking-wide pr-4 transition-colors ${faqOpen === i ? 'text-[#D4AF37]' : 'text-white/80 group-hover:text-[#D4AF37]'}`}>{f.q}</span>
                   <ChevronDown className={`text-[#D4AF37] shrink-0 transition-transform duration-300 ${faqOpen === i ? 'rotate-180' : ''}`} size={20} />
@@ -529,7 +532,7 @@ export default function V3BoldStatement() {
       </section>
 
       {/* ══════════════════════════════════════════════════
-          CTA — Gold Banner, Final Push
+          CTA — Gold Banner + Quote Form
          ══════════════════════════════════════════════════ */}
       <section id="book" className="relative overflow-hidden">
         {/* Gold background */}
@@ -559,6 +562,19 @@ export default function V3BoldStatement() {
                   <Phone size={20} /> Call Now
                 </a>
               </div>
+            </FadeIn>
+          </div>
+        </div>
+
+        {/* Quote Form on black background below gold banner */}
+        <div className="bg-black py-20 sm:py-24 px-6">
+          <div className="max-w-xl mx-auto">
+            <FadeIn>
+              <p className="font-montserrat text-[10px] tracking-[0.4em] uppercase text-[#D4AF37] mb-4 text-center font-bold">Or Fill Out the Form</p>
+              <h3 className="font-montserrat text-2xl sm:text-3xl font-black uppercase text-center tracking-tight mb-10">
+                Request Your <span className="text-[#D4AF37]">Quote</span>
+              </h3>
+              <QuoteForm theme="dark" />
             </FadeIn>
           </div>
         </div>

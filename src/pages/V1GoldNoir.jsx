@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Phone, Mail, MapPin, Star, ArrowRight, ChevronDown, ChevronUp, Sparkles, Menu, X, Users, CheckCircle2, Clock, Shield } from 'lucide-react'
 import { FadeIn, ScaleIn, IMG } from '../components/shared'
+import QuoteForm from '../components/QuoteForm'
 
 export default function V1GoldNoir() {
   const [scrolled, setScrolled] = useState(false)
@@ -15,6 +16,14 @@ export default function V1GoldNoir() {
     return () => window.removeEventListener('scroll', fn)
   }, [])
 
+  // Auto-rotate testimonials every 5 seconds
+  useEffect(() => {
+    const t = setInterval(() => setTestimonial(p => (p + 1) % 3), 5000)
+    return () => clearInterval(t)
+  }, [])
+
+  const navLinks = ['Fleet','How It Works','Gallery','Reviews','FAQ']
+
   return (
     <div className="bg-[#0a0a14] text-white min-h-screen">
       {/* ── NAV ── */}
@@ -22,7 +31,7 @@ export default function V1GoldNoir() {
         <div className="max-w-7xl mx-auto flex items-center justify-between h-20 px-6">
           <a href="#" className="font-playfair text-2xl font-bold">Pretty <span className="text-gold">Potty</span></a>
           <div className="hidden lg:flex items-center gap-10">
-            {['Fleet','How It Works','Gallery','Reviews','FAQ'].map(l => (
+            {navLinks.map(l => (
               <a key={l} href={`#${l.toLowerCase().replace(/ /g,'-')}`} className="font-montserrat text-[11px] tracking-[0.2em] uppercase text-white/60 hover:text-gold transition-colors">{l}</a>
             ))}
             <a href="#quote" className="relative group">
@@ -30,16 +39,49 @@ export default function V1GoldNoir() {
               <span className="relative bg-gold text-[#0a0a14] font-montserrat text-[11px] tracking-[0.15em] uppercase font-bold px-7 py-3 rounded inline-block">Get a Quote</span>
             </a>
           </div>
-          <button onClick={() => setMenuOpen(!menuOpen)} className="lg:hidden text-white cursor-pointer">
+          <button onClick={() => setMenuOpen(!menuOpen)} className="lg:hidden text-white cursor-pointer" aria-label={menuOpen ? 'Close menu' : 'Open menu'}>
             {menuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
       </nav>
 
+      {/* ── MOBILE MENU DROPDOWN ── */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed top-20 inset-x-0 z-40 bg-[#0a0a14]/98 backdrop-blur-xl border-b border-gold/10 lg:hidden overflow-hidden"
+          >
+            <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col gap-2">
+              {navLinks.map(l => (
+                <a
+                  key={l}
+                  href={`#${l.toLowerCase().replace(/ /g,'-')}`}
+                  onClick={() => setMenuOpen(false)}
+                  className="font-montserrat text-[12px] tracking-[0.2em] uppercase text-white/60 hover:text-gold transition-colors py-3 border-b border-white/[0.05]"
+                >
+                  {l}
+                </a>
+              ))}
+              <a
+                href="#quote"
+                onClick={() => setMenuOpen(false)}
+                className="mt-4 bg-gold text-[#0a0a14] font-montserrat text-[12px] tracking-[0.15em] uppercase font-bold px-7 py-4 rounded-sm text-center cursor-pointer"
+              >
+                Get a Quote
+              </a>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* ── HERO ── */}
       <section className="relative min-h-screen flex items-center overflow-hidden">
         <div className="absolute inset-0">
-          <img src={IMG.hero1} alt="" className="w-full h-full object-cover opacity-40" style={{ animation: 'kenburns 25s ease-in-out infinite' }} />
+          <img src={IMG.hero1} alt="" className="w-full h-full object-cover opacity-40" fetchpriority="high" style={{ animation: 'kenburns 25s ease-in-out infinite' }} />
           <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a14] via-transparent to-[#0a0a14]" />
           <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a14]/80 to-transparent" />
         </div>
@@ -71,7 +113,7 @@ export default function V1GoldNoir() {
           </motion.h1>
 
           <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 0.5 }}
-            className="font-inter text-xl text-white/50 max-w-xl mb-12 leading-relaxed">
+            className="font-inter text-xl text-white/60 max-w-xl mb-12 leading-relaxed">
             Luxury mobile restrooms with A/C, Bluetooth music, LED lighting & hot water — for New York's most unforgettable events.
           </motion.p>
 
@@ -113,7 +155,7 @@ export default function V1GoldNoir() {
       {/* ── MARQUEE ── */}
       <div className="border-y border-gold/10 py-5 overflow-hidden bg-gold/[0.03]">
         <div className="flex whitespace-nowrap" style={{ animation: 'marquee 40s linear infinite' }}>
-          {[...Array(2)].flatMap(() => ['Climate Controlled','Bluetooth Music','Hot & Cold Water','LED Lighting','Full Privacy','Porcelain Fixtures','Granite Countertops','White-Glove Service']).map((t, i) => (
+          {[...Array(3)].flatMap(() => ['Climate Controlled','Bluetooth Music','Hot & Cold Water','LED Lighting','Full Privacy','Porcelain Fixtures','Granite Countertops','White-Glove Service']).map((t, i) => (
             <span key={i} className="font-montserrat text-[10px] tracking-[0.25em] uppercase text-gold/50 mx-10 flex items-center gap-3">
               <span className="w-1.5 h-1.5 rounded-full bg-gold/30" /> {t}
             </span>
@@ -249,6 +291,7 @@ export default function V1GoldNoir() {
               <div className="flex justify-center gap-3 mt-10">
                 {[0, 1, 2].map(i => (
                   <button key={i} onClick={() => setTestimonial(i)}
+                    aria-label={`Show testimonial ${i + 1}`}
                     className={`h-1.5 rounded-full transition-all cursor-pointer ${i === testimonial ? 'w-10 bg-gold' : 'w-4 bg-white/10 hover:bg-white/20'}`} />
                 ))}
               </div>
@@ -274,6 +317,7 @@ export default function V1GoldNoir() {
             <FadeIn key={i} delay={i * 0.05}>
               <div className="border-b border-white/[0.06]">
                 <button onClick={() => setFaqOpen(faqOpen === i ? null : i)}
+                  aria-expanded={faqOpen === i}
                   className="w-full flex items-center justify-between py-6 text-left cursor-pointer group">
                   <span className="font-inter font-medium text-white/80 group-hover:text-gold transition-colors pr-4">{f.q}</span>
                   <ChevronDown className={`text-gold/40 shrink-0 transition-transform ${faqOpen === i ? 'rotate-180' : ''}`} size={18} />
@@ -281,7 +325,7 @@ export default function V1GoldNoir() {
                 <AnimatePresence>
                   {faqOpen === i && (
                     <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3 }}>
-                      <p className="font-inter text-sm text-white/40 leading-relaxed pb-6">{f.a}</p>
+                      <p className="font-inter text-sm text-white/60 leading-relaxed pb-6">{f.a}</p>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -299,17 +343,10 @@ export default function V1GoldNoir() {
             <h2 className="font-playfair text-5xl sm:text-6xl font-bold mb-6">
               Ready to <span className="text-gold">Elevate</span><br />Your Event?
             </h2>
-            <p className="font-inter text-lg text-white/40 mb-10 max-w-xl mx-auto">
+            <p className="font-inter text-lg text-white/60 mb-10 max-w-xl mx-auto">
               Join 500+ events that chose luxury over compromise. Get your personalized quote in under 2 hours.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="mailto:info@prettypottyny.com" className="group bg-gold hover:bg-gold-rich text-[#0a0a14] font-montserrat text-sm font-bold uppercase tracking-wider px-12 py-5 rounded-sm transition-all cursor-pointer inline-flex items-center justify-center gap-3" style={{ animation: 'pulse-gold 3s infinite' }}>
-                Get Your Free Quote <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-              </a>
-              <a href="tel:+15165551234" className="border border-white/20 hover:border-gold text-white/70 hover:text-gold font-montserrat text-sm uppercase tracking-wider px-12 py-5 rounded-sm transition-all cursor-pointer inline-flex items-center justify-center gap-3">
-                <Phone size={18} /> (516) 555-1234
-              </a>
-            </div>
+            <QuoteForm theme="dark" />
           </FadeIn>
         </div>
       </section>
@@ -323,8 +360,14 @@ export default function V1GoldNoir() {
           </div>
           <div>
             <p className="font-montserrat text-[10px] tracking-[0.2em] uppercase text-gold mb-4">Links</p>
-            {['Fleet','Gallery','Reviews','FAQ','Get a Quote'].map(l => (
-              <a key={l} href="#" className="block font-inter text-sm text-white/30 hover:text-gold py-1 transition-colors cursor-pointer">{l}</a>
+            {[
+              { label: 'Fleet', href: '#fleet' },
+              { label: 'Gallery', href: '#gallery' },
+              { label: 'Reviews', href: '#reviews' },
+              { label: 'FAQ', href: '#faq' },
+              { label: 'Get a Quote', href: '#quote' },
+            ].map(l => (
+              <a key={l.label} href={l.href} className="block font-inter text-sm text-white/30 hover:text-gold py-1 transition-colors cursor-pointer">{l.label}</a>
             ))}
           </div>
           <div>

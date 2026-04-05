@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { motion, useInView, AnimatePresence } from 'framer-motion'
+import { motion, useInView } from 'framer-motion'
 
 export function FadeIn({ children, delay = 0, className = '', direction = 'up' }) {
   const ref = useRef(null)

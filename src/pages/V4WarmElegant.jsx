@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Phone, Mail, MapPin, Star, ArrowRight, ChevronDown, Heart, Menu, X, Users, CheckCircle2, Clock, Shield, Sparkles, Globe, Share2, Leaf, Calendar, Award } from 'lucide-react'
 import { FadeIn, ScaleIn, IMG } from '../components/shared'
+import QuoteForm from '../components/QuoteForm'
 
 export default function V4WarmElegant() {
   const [scrolled, setScrolled] = useState(false)
@@ -15,14 +16,10 @@ export default function V4WarmElegant() {
     return () => window.removeEventListener('scroll', fn)
   }, [])
 
-  // Load Cormorant Garamond font
+  // Auto-rotate testimonials
   useEffect(() => {
-    if (!document.querySelector('link[href*="Cormorant+Garamond"]')) {
-      const link = document.createElement('link')
-      link.rel = 'stylesheet'
-      link.href = 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap'
-      document.head.appendChild(link)
-    }
+    const t = setInterval(() => setActiveStory(p => (p + 1) % 3), 5000)
+    return () => clearInterval(t)
   }, [])
 
   const cormorant = { fontFamily: '"Cormorant Garamond", serif' }
@@ -47,7 +44,7 @@ export default function V4WarmElegant() {
               Plan My Event
             </a>
           </div>
-          <button onClick={() => setMenuOpen(!menuOpen)} className="lg:hidden text-[#0D3B2E] cursor-pointer">
+          <button onClick={() => setMenuOpen(!menuOpen)} className="lg:hidden text-[#0D3B2E] cursor-pointer" aria-label={menuOpen ? 'Close menu' : 'Open menu'}>
             {menuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
@@ -84,6 +81,7 @@ export default function V4WarmElegant() {
         <div className="absolute inset-0">
           <img src={IMG.wedding3} alt="Elegant wedding celebration"
             className="w-full h-full object-cover"
+            fetchpriority="high"
             style={{ animation: 'kenburns 25s ease-in-out infinite' }} />
           <div className="absolute inset-0 bg-[#0D3B2E]/40" />
           <div className="absolute inset-0 bg-gradient-to-b from-[#0D3B2E]/20 via-transparent to-[#0D3B2E]/50" />
@@ -305,13 +303,6 @@ export default function V4WarmElegant() {
             ].map((t, i) => (
               <FadeIn key={i} delay={i * 0.15}>
                 <div className="group bg-white/[0.04] rounded-3xl overflow-hidden border border-white/[0.06] hover:border-[#D4C5A0]/30 transition-all duration-500">
-                  {t.tag && (
-                    <div className="absolute top-4 right-4 z-10">
-                      <span className="bg-[#D4C5A0] text-[#0D3B2E] font-inter text-[9px] tracking-[0.15em] uppercase font-bold px-3 py-1.5 rounded-full">
-                        {t.tag}
-                      </span>
-                    </div>
-                  )}
                   <div className="relative h-64 overflow-hidden">
                     <img src={t.img} alt={t.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
@@ -484,6 +475,7 @@ export default function V4WarmElegant() {
               <div className="flex justify-center gap-3 mt-10">
                 {[0, 1, 2].map(i => (
                   <button key={i} onClick={() => setActiveStory(i)}
+                    aria-label={`Show testimonial ${i + 1}`}
                     className={`h-2 rounded-full transition-all cursor-pointer ${i === activeStory ? 'w-10 bg-[#D4C5A0]' : 'w-4 bg-[#0D3B2E]/10 hover:bg-[#0D3B2E]/20'}`}
                   />
                 ))}
@@ -556,6 +548,7 @@ export default function V4WarmElegant() {
               <FadeIn key={i} delay={i * 0.05}>
                 <div className="bg-white rounded-2xl overflow-hidden">
                   <button onClick={() => setFaqOpen(faqOpen === i ? null : i)}
+                    aria-expanded={faqOpen === i}
                     className="w-full flex items-center justify-between p-6 text-left cursor-pointer group">
                     <span className="font-inter font-medium text-[#0D3B2E]/80 group-hover:text-[#0D3B2E] transition-colors pr-4">{f.q}</span>
                     <ChevronDown className={`text-[#D4C5A0] shrink-0 transition-transform duration-300 ${faqOpen === i ? 'rotate-180' : ''}`} size={18} />
@@ -609,6 +602,12 @@ export default function V4WarmElegant() {
             <p className="font-inter text-lg text-white/50 mb-12 max-w-xl mx-auto leading-relaxed">
               Your celebration deserves every beautiful detail. Let us bring luxury and warmth to your most cherished moments.
             </p>
+
+            {/* Quote Form */}
+            <div className="max-w-xl mx-auto mb-12">
+              <QuoteForm theme="green" />
+            </div>
+
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a href="mailto:info@prettypottyny.com"
                 className="group bg-[#D4C5A0] hover:bg-[#c4b590] text-[#0D3B2E] font-inter text-sm font-semibold px-12 py-5 rounded-full transition-all cursor-pointer inline-flex items-center justify-center gap-3">
@@ -642,8 +641,14 @@ export default function V4WarmElegant() {
           </div>
           <div>
             <p className="font-inter text-[10px] tracking-[0.2em] uppercase text-[#D4C5A0] mb-4">Explore</p>
-            {['Collection', 'Gallery', 'Love Stories', 'FAQ', 'Plan My Event'].map(l => (
-              <a key={l} href="#" className="block font-inter text-sm text-white/30 hover:text-[#D4C5A0] py-1.5 transition-colors cursor-pointer">{l}</a>
+            {[
+              { label: 'Collection', href: '#collection' },
+              { label: 'Gallery', href: '#gallery' },
+              { label: 'Love Stories', href: '#love-stories' },
+              { label: 'FAQ', href: '#faq' },
+              { label: 'Plan My Event', href: '#book' },
+            ].map(l => (
+              <a key={l.label} href={l.href} className="block font-inter text-sm text-white/30 hover:text-[#D4C5A0] py-1.5 transition-colors cursor-pointer">{l.label}</a>
             ))}
           </div>
           <div>
@@ -687,15 +692,6 @@ export default function V4WarmElegant() {
         </a>
       </div>
       <div className="h-16 lg:hidden" />
-
-      {/* ── GLOBAL STYLES ── */}
-      <style>{`
-        @keyframes kenburns {
-          0% { transform: scale(1); }
-          50% { transform: scale(1.08); }
-          100% { transform: scale(1); }
-        }
-      `}</style>
     </div>
   )
 }
