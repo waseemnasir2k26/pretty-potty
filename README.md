@@ -1,16 +1,57 @@
-# React + Vite
+# Pretty Potty NYC
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Luxury Mobile Restroom Rentals — Long Island, New York**
 
-Currently, two official plugins are available:
+Premium marketing website for Pretty Potty NYC, a luxury portable restroom rental service targeting upscale events on Long Island.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-pretty--potty.vercel.app-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://pretty-potty.vercel.app)
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Features
 
-## Expanding the ESLint configuration
+- **5 Landing Page Variants** — Client picks their favorite, we launch it
+- **Luxury UI** — Glassmorphism, gold accents, dark premium aesthetic
+- **WhatsApp Booking** — One-tap inquiry via WhatsApp integration
+- **Service Area Targeting** — Long Island, Hamptons, NYC metro focus
+- **Mobile-First** — Fully responsive across all devices
+- **Animated Sections** — Framer Motion scroll-triggered animations
+- **SEO-Ready** — Semantic HTML, meta tags, OG images
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Framework | React 18 + Vite 5 |
+| Styling | Tailwind CSS 3 |
+| Animations | Framer Motion |
+| Icons | Lucide React |
+| Deployment | Vercel |
+
+## Screenshots
+
+Visit the [live demo](https://pretty-potty.vercel.app) to switch between all 5 design variants.
+
+## Getting Started
+
+```bash
+npm install
+npm run dev
+```
+
+Open [http://localhost:5173](http://localhost:5173).
+
+## Project Structure
+
+```
+src/
+├── components/     # Reusable UI components
+├── pages/          # Page-level components
+├── assets/         # Images and static files
+├── App.jsx         # Router and layout
+└── main.jsx        # Entry point
+```
+
+---
+
+**Built by [Skynet Labs](https://www.skynetjoe.com)** — AI-powered websites & automation for businesses ready to scale.
