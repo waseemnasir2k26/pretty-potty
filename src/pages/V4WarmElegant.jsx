@@ -827,10 +827,21 @@ export default function V4WarmElegant() {
         </div>
         <div className="max-w-7xl mx-auto mt-12 pt-8 border-t border-[#E8C9A7]/40 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="font-inter text-xs text-[#7A5C4D]/70">&copy; 2026 Pretty Potty Inc. All rights reserved.</p>
-          <div className="flex items-center gap-6">
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
             <a href="#" className="font-inter text-xs text-[#7A5C4D]/70 hover:text-[#C9876D] transition-colors cursor-pointer">Privacy</a>
             <a href="#" className="font-inter text-xs text-[#7A5C4D]/70 hover:text-[#C9876D] transition-colors cursor-pointer">Terms</a>
-            <span className="font-inter text-xs text-[#7A5C4D]/60">Designed with <Heart size={10} className="inline text-[#C9876D] fill-[#C9876D]" /> in NYC</span>
+            <span className="font-inter text-xs text-[#7A5C4D]/70">
+              Designed &amp; Developed with <Heart size={10} className="inline text-[#C9876D] fill-[#C9876D]" /> by{' '}
+              <a href="https://www.skynetjoe.com" target="_blank" rel="noopener noreferrer"
+                className="font-semibold bg-gradient-to-r from-[#C9876D] to-[#D4A0A0] bg-clip-text text-transparent hover:underline">
+                SkynetLabs
+              </a>
+              {' '}&amp;{' '}
+              <a href="https://www.waseemnasir.com" target="_blank" rel="noopener noreferrer"
+                className="font-semibold bg-gradient-to-r from-[#C9876D] to-[#D4A0A0] bg-clip-text text-transparent hover:underline">
+                Waseem Nasir
+              </a>
+            </span>
           </div>
         </div>
       </footer>
