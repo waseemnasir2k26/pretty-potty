@@ -61,6 +61,16 @@ export default function QuoteForm({ theme = 'dark' }) {
       stepActive: 'bg-[#B76E79] text-white', stepDone: 'bg-[#B76E79]/20 text-[#B76E79]', stepPending: 'bg-white/5 text-white/20',
       select: 'bg-white/[0.06] border-white/10 text-white', error: 'text-red-400',
     },
+    warm: {
+      bg: 'bg-white/95 backdrop-blur-sm shadow-2xl shadow-[#C9876D]/10', border: 'border-[#E8C9A7]/40',
+      input: 'bg-[#FFF8F3] border-[#E8C9A7]/50 text-[#3D2418] placeholder:text-[#7A5C4D]/40 focus:border-[#C9876D]',
+      label: 'text-[#7A5C4D]', accent: 'bg-gradient-to-r from-[#C9876D] to-[#D4A0A0] text-white shadow-lg shadow-[#C9876D]/30', accentHover: 'hover:from-[#b6735a] hover:to-[#c08e8e]',
+      outline: 'border-[#E8C9A7] text-[#7A5C4D] hover:border-[#C9876D] hover:text-[#C9876D]',
+      stepActive: 'bg-gradient-to-br from-[#C9876D] to-[#D4A0A0] text-white shadow-md shadow-[#C9876D]/30',
+      stepDone: 'bg-[#C9876D]/15 text-[#C9876D]',
+      stepPending: 'bg-[#FFF8F3] text-[#C9876D]/30 border border-[#E8C9A7]/40',
+      select: 'bg-[#FFF8F3] border-[#E8C9A7]/50 text-[#3D2418]', error: 'text-rose-600',
+    },
   }
   const c = t[theme] || t.dark
 
@@ -83,8 +93,8 @@ export default function QuoteForm({ theme = 'dark' }) {
     return (
       <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
         className={`${c.bg} border ${c.border} rounded-2xl p-10 text-center`}>
-        <CheckCircle2 size={48} className={theme === 'light' ? 'text-green-500 mx-auto mb-4' : 'text-[#C9A96E] mx-auto mb-4'} />
-        <h3 className={`font-playfair text-2xl font-bold mb-3 ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
+        <CheckCircle2 size={48} className={theme === 'light' ? 'text-green-500 mx-auto mb-4' : theme === 'warm' ? 'text-[#C9876D] mx-auto mb-4' : 'text-[#C9A96E] mx-auto mb-4'} />
+        <h3 className={`font-playfair text-2xl font-bold mb-3 ${theme === 'light' || theme === 'warm' ? 'text-[#3D2418]' : 'text-white'}`}>
           Quote Request Received!
         </h3>
         <p className={`font-inter text-sm ${c.label} mb-2`}>
